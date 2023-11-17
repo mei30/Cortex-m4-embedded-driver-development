@@ -187,4 +187,12 @@ typedef struct
 #define GPIOH_PCLOCK_EN()		(RCC->AHB1ENR &= ~(1 << 7))
 #define GPIOI_PCLOCK_EN()		(RCC->AHB1ENR &= ~(1 << 8))
 
+/* Generap purpose Macros*/
+#define ENABLE		1
+#define DISABLE		0
+#define SET			ENABLE
+#define RESET		DISABLE
+#define GPIO_PIN_SET	SET
+#define GPIO_PIN_RESET	RESET
+
 #endif /* INC_STM32F407XX_H_ */
