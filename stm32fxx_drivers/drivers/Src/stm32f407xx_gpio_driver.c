@@ -11,80 +11,80 @@ void GPIO_PreClockControl(GPIO_RegDef_t* pGPIOx, uint8_t EnorDi)
 {
     if (EnorDi == ENABLE)
     {
-        if (pGPIOx == GPAIOA)
+        if (pGPIOx == GPIOA)
         {
             GPIOA_PCLOCK_EN();
         }
-        else if (pGPIOx == GPAIOB)
+        else if (pGPIOx == GPIOB)
         {
             GPIOB_PCLOCK_EN();
         }
 
-        else if (pGPIOx == GPAIOC)
+        else if (pGPIOx == GPIOC)
         {
             GPIOC_PCLOCK_EN();
         }
-        else if (pGPIOx == GPAIOD)
+        else if (pGPIOx == GPIOD)
         {
             GPIOD_PCLOCK_EN();
         }
-        else if (pGPIOx == GPAIOE)
+        else if (pGPIOx == GPIOE)
         {
             GPIOE_PCLOCK_EN();
         }
-        else if (pGPIOx == GPAIOF)
+        else if (pGPIOx == GPIOF)
         {
             GPIOF_PCLOCK_EN();
         }
-        else if (pGPIOx == GPAIOG)
+        else if (pGPIOx == GPIOG)
         {
             GPIOG_PCLOCK_EN();
         }
-        else if (pGPIOx == GPAIOH)
+        else if (pGPIOx == GPIOH)
         {
             GPIOH_PCLOCK_EN();
         }
-        else if (pGPIOx == GPAIOI)
+        else if (pGPIOx == GPIOI)
         {
             GPIOI_PCLOCK_EN();
         }
     }
     else
     {
-        if (pGPIOx == GPAIOA)
+        if (pGPIOx == GPIOA)
         {
             GPIOA_PCLOCK_DI();
         }
-        else if (pGPIOx == GPAIOB)
+        else if (pGPIOx == GPIOB)
         {
             GPIOB_PCLOCK_DI();
         }
 
-        else if (pGPIOx == GPAIOC)
+        else if (pGPIOx == GPIOC)
         {
             GPIOC_PCLOCK_DI();
         }
-        else if (pGPIOx == GPAIOD)
+        else if (pGPIOx == GPIOD)
         {
             GPIOD_PCLOCK_DI();
         }
-        else if (pGPIOx == GPAIOE)
+        else if (pGPIOx == GPIOE)
         {
             GPIOE_PCLOCK_DI();
         }
-        else if (pGPIOx == GPAIOF)
+        else if (pGPIOx == GPIOF)
         {
             GPIOF_PCLOCK_DI();
         }
-        else if (pGPIOx == GPAIOG)
+        else if (pGPIOx == GPIOG)
         {
             GPIOG_PCLOCK_DI();
         }
-        else if (pGPIOx == GPAIOH)
+        else if (pGPIOx == GPIOH)
         {
             GPIOH_PCLOCK_DI();
         }
-        else if (pGPIOx == GPAIOI)
+        else if (pGPIOx == GPIOI)
         {
             GPIOI_PCLOCK_DI();
         }
@@ -144,40 +144,40 @@ void GPIO_Init(GPIO_Handle_t* pGPIOHandle)
 
 void GPIO_DeInit(GPIO_RegDef_t* pGPIOx)
 {
-    if (pGPIOx == GPAIOA)
+    if (pGPIOx == GPIOA)
     {
         GPIOA_REG_RESET();
     }
-    else if (pGPIOx == GPAIOB)
+    else if (pGPIOx == GPIOB)
     {
         GPIOB_REG_RESET();
     }
 
-    else if (pGPIOx == GPAIOC)
+    else if (pGPIOx == GPIOC)
     {
         GPIOC_REG_RESET();
     }
-    else if (pGPIOx == GPAIOD)
+    else if (pGPIOx == GPIOD)
     {
         GPIOD_REG_RESET();
     }
-    else if (pGPIOx == GPAIOE)
+    else if (pGPIOx == GPIOE)
     {
         GPIOE_REG_RESET();
     }
-    else if (pGPIOx == GPAIOF)
+    else if (pGPIOx == GPIOF)
     {
         GPIOF_REG_RESET();
     }
-    else if (pGPIOx == GPAIOG)
+    else if (pGPIOx == GPIOG)
     {
         GPIOG_REG_RESET();
     }
-    else if (pGPIOx == GPAIOH)
+    else if (pGPIOx == GPIOH)
     {
         GPIOH_REG_RESET();
     }
-    else if (pGPIOx == GPAIOI)
+    else if (pGPIOx == GPIOI)
     {
         GPIOI_REG_RESET();
     }

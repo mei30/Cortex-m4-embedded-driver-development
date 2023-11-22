@@ -24,8 +24,29 @@
 
 #include "stm32f407xx.h"
 
+void delay()
+{
+	for (int i = 0; i < 50000; i++);
+}
+
 int main(void)
 {
-    /* Loop forever */
-	for(;;);
+	GPIO_Handle_t GpioLed;
+
+	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
+	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
+	GpioLed.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_OD;
+	GpioLed.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
+	GpioLed.pGPIOx = GPIOD;
+
+	GPIO_PreClockControl(GPIOD, ENABLE);
+
+	GPIO_Init(&GpioLed);
+
+	while (1)
+	{
+		GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_NO_12);
+		delay();
+	}
 }
