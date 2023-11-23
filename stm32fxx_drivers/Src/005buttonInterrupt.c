@@ -24,8 +24,6 @@
 
 #include "stm32f407xx.h"
 
-#include <string.h>
-
 void delay()
 {
 	for (int i = 0; i < 500000; i++);
@@ -36,12 +34,9 @@ int main(void)
 	GPIO_Handle_t GpioLed;
 	GPIO_Handle_t GpioButton;
 
-	memset(GpioLed, 0 , sizeof(GpioLed));
-	memset(GpioButton, 0, sizeof(GpioButton));
-
-	GpioButton.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
+	GpioButton.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IT_RT;
 	GpioButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_0;
-	GpioButton.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+	GpioButton.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PU;
 	GpioButton.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 	GpioButton.pGPIOx = GPIOA;
 
@@ -53,20 +48,20 @@ int main(void)
 	GpioLed.pGPIOx = GPIOA;
 
 	GPIO_PreClockControl(GPIOA, ENABLE);
-//	GPIO_PreClockControl(GPIOA, ENABLE);
+	GPIO_PreClockControl(GPIOA, ENABLE);
 
 	GPIO_Init(&GpioLed);
 	GPIO_Init(&GpioButton);
 
+	GPIO_IRQITControl(IRQ_NO_EXTI0, ENABLE);
+	GPIO_IRQPRIControl(IRQ_NO_EXTI0, IRQ_NO_PRI12);
 
+	while (1);
+}
 
-	while (1)
-	{
-		uint8_t x = GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0);
-		if (x == 1)
-		{
-			delay();
-			GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_8);
-		}
-	}
+void EXTI0_IRQHandler(void)
+{
+	delay();
+	GPIO_IRQHandling(GPIO_PIN_NO_0);
+	GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_8);
 }

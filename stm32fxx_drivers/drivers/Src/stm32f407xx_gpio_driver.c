@@ -287,7 +287,7 @@ void GPIO_IRQPRIControl(uint8_t IRQNumber, uint8_t IRQPriority)
 
     uint8_t amount_shift = (iprx_section * 8) + (8 - NO_PR_BITS_IMPLEMENTED);
 
-    *(NIVIC_PRI_BASE_ADDR + (iprx * 4)) |= (IRQPriority << amount_shift);
+    *(NIVIC_PRI_BASE_ADDR + iprx) |= (IRQPriority << amount_shift);
 }
 
 void GPIO_IRQHandling(uint8_t pinNumber)

@@ -28,6 +28,29 @@
 
 #define NO_PR_BITS_IMPLEMENTED		4
 
+#define IRQ_NO_EXTI0		6
+#define IRQ_NO_EXTI1		7
+#define IRQ_NO_EXTI2		8
+#define IRQ_NO_EXTI3		9
+#define IRQ_NO_EXTI4		10
+#define IRQ_NO_EXTI5_9		23
+#define IRQ_NO_EXTI10_15	40
+
+#define IRQ_NO_PRI0			0
+#define IRQ_NO_PRI1			1
+#define IRQ_NO_PRI2			2
+#define IRQ_NO_PRI3			3
+#define IRQ_NO_PRI4			4
+#define IRQ_NO_PRI5			5
+#define IRQ_NO_PRI6			6
+#define IRQ_NO_PRI7			7
+#define IRQ_NO_PRI8			8
+#define IRQ_NO_PRI9			9
+#define IRQ_NO_PRI10		10
+#define IRQ_NO_PRI11		11
+#define IRQ_NO_PRI12		12
+
+
 /*
  * The BASEADDR address of Flash and SRAM memories
  */
@@ -240,22 +263,14 @@ typedef struct {
 
 #define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0 :\
 								 (x == GPIOB) ? 1 :\
-								 (x == GPIOC) ? 1 :\
-								 (x == GPIOD) ? 1 :\
-								 (x == GPIOE) ? 1 :\
-								 (x == GPIOF) ? 1 :\
-								 (x == GPIOG) ? 1 :\
-								 (x == GPIOH) ? 1 :\
-								 (x == GPIOI) ? 1 :\
-							    )
+								 (x == GPIOC) ? 3 :\
+								 (x == GPIOD) ? 4 :\
+								 (x == GPIOE) ? 5 :\
+								 (x == GPIOF) ? 6 :\
+								 (x == GPIOG) ? 7 :\
+								 (x == GPIOH) ? 8 :\
+								 (x == GPIOI) ? 9 : 0)
 
-#define IRQ_NO_EXTI0		6
-#define IRQ_NO_EXTI1		7
-#define IRQ_NO_EXTI2		8
-#define IRQ_NO_EXTI3		9
-#define IRQ_NO_EXTI4		10
-#define IRQ_NO_EXTI5-9		23
-#define IRQ_NO_EXTI10-15	40
 
 
 /* Generate purpose Macros*/
