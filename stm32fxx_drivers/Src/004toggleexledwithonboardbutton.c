@@ -47,7 +47,7 @@ int main(void)
 	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 	GpioLed.pGPIOx = GPIOA;
 
-	GPIO_PreClockControl(GPIOB, ENABLE);
+	GPIO_PreClockControl(GPIOA, ENABLE);
 	GPIO_PreClockControl(GPIOA, ENABLE);
 
 	GPIO_Init(&GpioLed);
@@ -55,14 +55,11 @@ int main(void)
 
 	while (1)
 	{
-		uint8_t x = GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_12);
-		if (x == 0)
+		uint8_t x = GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0);
+		if (x == 1)
 		{
 			delay();
-			GPIO_ToggleOutputPin(GPIOB, GPIO_PIN_NO_8);
+			GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_8);
 		}
 	}
-
-
-
 }
