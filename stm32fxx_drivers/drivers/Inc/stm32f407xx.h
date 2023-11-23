@@ -11,6 +11,24 @@
 #include <stdint.h>
 
 /*
+ * Processor Specific Details
+ */
+
+#define NVIC_ISER0		( (volatile uint32_t* )0xE000E100 )
+#define NVIC_ISER1		( (volatile uint32_t* )0xE000E104 )
+#define NVIC_ISER2		( (volatile uint32_t* )0xE000E108 )
+#define NVIC_ISER3		( (volatile uint32_t* )0xE000E10C )
+
+#define NVIC_ICER0		( (volatile uint32_t* )0xE000E180 )
+#define NVIC_ICER1		( (volatile uint32_t* )0xE000E184 )
+#define NVIC_ICER2		( (volatile uint32_t* )0xE000E188 )
+#define NVIC_ICER3		( (volatile uint32_t* )0xE000E18C )
+
+#define NIVIC_PRI_BASE_ADDR ((volatile uint32_t*)0xE000E400)
+
+#define NO_PR_BITS_IMPLEMENTED		4
+
+/*
  * The BASEADDR address of Flash and SRAM memories
  */
 
@@ -126,6 +144,25 @@ typedef struct
 	volatile uint32_t DCKCFGR;
 } RCC_RegDef_t;
 
+typedef struct {
+	volatile uint32_t IMR;
+	volatile uint32_t EMR;
+	volatile uint32_t RTSR;
+	volatile uint32_t FTSR;
+	volatile uint32_t SWIER;
+	volatile uint32_t PR;
+} EXTI_RegDef_t;
+
+typedef struct {
+	volatile uint32_t MEMRMP;
+	volatile uint32_t PMC;
+	volatile uint32_t EXTICR[4];
+	uint32_t RESERVED1[2];
+	volatile uint32_t CMPCR;
+	uint32_t RESERVED2[2];
+	volatile uint32_t CFGR;
+} SYSCFG_RegDef_t;
+
 /*
 * Peripheral definitions
 */
@@ -141,6 +178,9 @@ typedef struct
 #define GPIOI		((GPIO_RegDef_t *) GPIOI_BASEADDR)
 
 #define RCC			((RCC_RegDef_t *) RCC_BASEADDR)
+#define EXTI		((EXTI_RegDef_t *) EXTI_BASEADDR)
+
+#define SYSCFG		((SYSCFG_RegDef_t *) SYSCFG_BASEADDR)
 
 
 /* Clock enable macros for GPIOx peripherals */
@@ -198,7 +238,27 @@ typedef struct
 #define GPIOH_REG_RESET()		do { (RCC->AHB1RSTR |= (1 << 7)); (RCC->AHB1RSTR &= ~(1 << 7));}while(0)
 #define GPIOI_REG_RESET()		do { (RCC->AHB1RSTR |= (1 << 8)); (RCC->AHB1RSTR &= ~(1 << 8));}while(0)
 
-/* Generap purpose Macros*/
+#define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0 :\
+								 (x == GPIOB) ? 1 :\
+								 (x == GPIOC) ? 1 :\
+								 (x == GPIOD) ? 1 :\
+								 (x == GPIOE) ? 1 :\
+								 (x == GPIOF) ? 1 :\
+								 (x == GPIOG) ? 1 :\
+								 (x == GPIOH) ? 1 :\
+								 (x == GPIOI) ? 1 :\
+							    )
+
+#define IRQ_NO_EXTI0		6
+#define IRQ_NO_EXTI1		7
+#define IRQ_NO_EXTI2		8
+#define IRQ_NO_EXTI3		9
+#define IRQ_NO_EXTI4		10
+#define IRQ_NO_EXTI5-9		23
+#define IRQ_NO_EXTI10-15	40
+
+
+/* Generate purpose Macros*/
 #define ENABLE		1
 #define DISABLE		0
 #define SET			ENABLE
