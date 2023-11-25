@@ -138,7 +138,7 @@ typedef struct
 	volatile uint32_t AHB3RSTR;
 	uint32_t RESERVED;
 	volatile uint32_t APB1RSTR;
-	volatile uint32_t APB2RST;
+	volatile uint32_t APB2RSTR;
 	uint32_t RESERVED1;
 	uint32_t RESERVED2;
 	volatile uint32_t AHB1ENR;
@@ -186,6 +186,23 @@ typedef struct {
 	volatile uint32_t CFGR;
 } SYSCFG_RegDef_t;
 
+typedef struct
+{
+	volatile uint32_t CR1;
+	volatile uint32_t CR2;
+	volatile uint32_t SR;
+	volatile uint32_t DR;
+	volatile uint32_t CRCPR;
+	volatile uint32_t RXCRCR;
+	volatile uint32_t TXCRCR;
+	volatile uint32_t I2SCFGR;
+	volatile uint32_t I2SPR;
+} SPI_RegDef_t;
+
+#define SPI1		((SPI_RegDef_t *) SPI1_BASEADDR)
+#define SPI2		((SPI_RegDef_t *) SPI2_BASEADDR)
+#define SPI3		((SPI_RegDef_t *) SPI3_BASEADDR)
+
 /*
 * Peripheral definitions
 */
@@ -224,9 +241,14 @@ typedef struct {
 
 /* Clock enable macros for SPIx peripherals */
 #define SPI1_PCLOCK_EN()		(RCC->APB2ENR |= (1 << 12))
-#define SPI2_PCLOCK_EN()		(RCC->APB2ENR |= (1 << 14))
+#define SPI2_PCLOCK_EN()		(RCC->APB1ENR |= (1 << 14))
 #define SPI3_PCLOCK_EN()		(RCC->APB2ENR |= (1 << 15))
 #define SPI4_PCLOCK_EN()		(RCC->APB2ENR |= (1 << 13))
+
+#define SPI1_PCLOCK_DI()		(RCC->APB2ENR &= ~(1 << 12))
+#define SPI2_PCLOCK_DI()		(RCC->APB2ENR &= ~(1 << 14))
+#define SPI3_PCLOCK_DI()		(RCC->APB2ENR &= ~(1 << 15))
+#define SPI4_PCLOCK_DI()		(RCC->APB2ENR &= ~(1 << 13))
 
 /* Clock enable macros for USARTx peripherals */
 #define USART1_PCLOCK_EN()		(RCC->APB2ENR |= (1 << 4))
@@ -261,6 +283,10 @@ typedef struct {
 #define GPIOH_REG_RESET()		do { (RCC->AHB1RSTR |= (1 << 7)); (RCC->AHB1RSTR &= ~(1 << 7));}while(0)
 #define GPIOI_REG_RESET()		do { (RCC->AHB1RSTR |= (1 << 8)); (RCC->AHB1RSTR &= ~(1 << 8));}while(0)
 
+#define SPI1_REG_RESET()		do { (RCC->APB2RSTR |= (1 << 12)); (RCC->APB2RSTR &= ~(1 << 12));}while(0)
+#define SPI2_REG_RESET()		do { (RCC->APB1RSTR |= (1 << 14)); (RCC->APB1RSTR &= ~(1 << 14));}while(0)
+#define SPI3_REG_RESET()		do { (RCC->APB1RSTR |= (1 << 15)); (RCC->APB1RSTR &= ~(1 << 15));}while(0)
+
 #define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0 :\
 								 (x == GPIOB) ? 1 :\
 								 (x == GPIOC) ? 3 :\
@@ -280,7 +306,10 @@ typedef struct {
 #define RESET		DISABLE
 #define GPIO_PIN_SET	SET
 #define GPIO_PIN_RESET	RESET
+#define FLAG_SET		SET
+#define FLAG_RESET		RESET
 
 #include "stm32f407xx_gpio_driver.h"
+#include "stm32f407xx_spi_driver.h"
 
 #endif /* INC_STM32F407XX_H_ */

@@ -93,6 +93,8 @@ void GPIO_PreClockControl(GPIO_RegDef_t* pGPIOx, uint8_t EnorDi)
 
 void GPIO_Init(GPIO_Handle_t* pGPIOHandle)
 {
+	GPIO_PreClockControl(pGPIOHandle->pGPIOx, ENABLE);
+
     uint32_t temp = 0;
 
     if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
