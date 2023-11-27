@@ -242,7 +242,7 @@ typedef struct
 /* Clock enable macros for SPIx peripherals */
 #define SPI1_PCLOCK_EN()		(RCC->APB2ENR |= (1 << 12))
 #define SPI2_PCLOCK_EN()		(RCC->APB1ENR |= (1 << 14))
-#define SPI3_PCLOCK_EN()		(RCC->APB2ENR |= (1 << 15))
+#define SPI3_PCLOCK_EN()		(RCC->APB1ENR |= (1 << 15))
 #define SPI4_PCLOCK_EN()		(RCC->APB2ENR |= (1 << 13))
 
 #define SPI1_PCLOCK_DI()		(RCC->APB2ENR &= ~(1 << 12))

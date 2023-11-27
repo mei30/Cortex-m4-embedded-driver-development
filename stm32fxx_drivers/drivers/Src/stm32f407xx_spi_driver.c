@@ -42,33 +42,33 @@ void SPI_PreClockControl(SPI_RegDef_t* pSPIx, uint8_t EnorDi)
     }
 }
 
-void SPI_Init(SPI_Handle_t pSPIHandle)
+void SPI_Init(SPI_Handle_t* pSPIHandle)
 {
-	SPI_PreClockControl(pSPIHandle.pSPIx, ENABLE);
+	SPI_PreClockControl(pSPIHandle->pSPIx, ENABLE);
 
     uint32_t tempreg = 0;
 
-    tempreg |= (pSPIHandle.SPIConfig.SPI_DeviceMode << 2);
+    tempreg |= (pSPIHandle->SPIConfig.SPI_DeviceMode << 2);
 
-    if (pSPIHandle.SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_FD)
+    if (pSPIHandle->SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_FD)
     {
         tempreg &= ~(1 << 15);
-    } else if (pSPIHandle.SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_HD)
+    } else if (pSPIHandle->SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_HD)
     {
         tempreg |= (1 << 15);
-    } else if (pSPIHandle.SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_SIMPLEX_RXONLY)
+    } else if (pSPIHandle->SPIConfig.SPI_BusConfig == SPI_BUS_CONFIG_SIMPLEX_RXONLY)
     {
         tempreg &= ~(1 << 15);
         tempreg |= (1 << 10);
     }
 
-    tempreg |= (pSPIHandle.SPIConfig.SPI_SclkSpeed << 3);
-    tempreg |= (pSPIHandle.SPIConfig.SPI_DFF << 11);
-    tempreg |= (pSPIHandle.SPIConfig.SPI_CPOL << 1);
-    tempreg |= (pSPIHandle.SPIConfig.SPI_CPHE << 0);
-    tempreg |= (pSPIHandle.SPIConfig.SPI_SSM << 9);
+    tempreg |= (pSPIHandle->SPIConfig.SPI_SclkSpeed << 3);
+    tempreg |= (pSPIHandle->SPIConfig.SPI_DFF << 11);
+    tempreg |= (pSPIHandle->SPIConfig.SPI_CPOL << 1);
+    tempreg |= (pSPIHandle->SPIConfig.SPI_CPHE << 0);
+    tempreg |= (pSPIHandle->SPIConfig.SPI_SSM << 9);
 
-    pSPIHandle.pSPIx->CR1 = tempreg;
+    pSPIHandle->pSPIx->CR1 = tempreg;
 }
 
 void SPI_DeInit(SPI_RegDef_t* pSPIx)

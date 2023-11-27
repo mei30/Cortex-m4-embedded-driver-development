@@ -64,7 +64,7 @@ typedef struct
 
 void SPI_PreClockControl(SPI_RegDef_t* pSPIx, uint8_t EnorDi);
 
-void SPI_Init(SPI_Handle_t pSPIHandle);
+void SPI_Init(SPI_Handle_t* pSPIHandle);
 void SPI_DeInit(SPI_RegDef_t* pSPIx);
 
 void SPI_SendData(SPI_RegDef_t* pSPIx, uint8_t* pTxBuffer, uint32_t len);
