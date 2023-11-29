@@ -52,6 +52,7 @@ typedef struct
 #define SPI_SSM_DI    0
 
 #define SPI_TXE_FLAG        (1 << 1)
+#define SPI_RXNE_FLAG        (1 << 0)
 #define SPI_RXNE_FLAG       (1 << 0)
 #define SPI_BUSY_FLAG       (1 << 7)
 
@@ -60,7 +61,6 @@ typedef struct
     SPI_RegDef_t* pSPIx;
     SPI_ConfigDef_t SPIConfig;
 } SPI_Handle_t;
-
 
 void SPI_PreClockControl(SPI_RegDef_t* pSPIx, uint8_t EnorDi);
 
@@ -77,6 +77,8 @@ void SPI_IRQHandling(SPI_Handle_t* pSPIHandle);
 
 void SPI_PeripheralControl(SPI_RegDef_t* pSPIx, uint8_t EnorDi);
 void SPI_SSIConfig(SPI_RegDef_t* pSPIx, uint8_t EnorDi);
+
+// TODO: In order to master mode work properly in Hardware mode add SSE API
 
 
 #include "stm32f407xx.h"

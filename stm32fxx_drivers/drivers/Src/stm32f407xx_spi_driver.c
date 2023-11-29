@@ -119,6 +119,23 @@ void SPI_SendData(SPI_RegDef_t* pSPIx, uint8_t* pTxBuffer, uint32_t len)
 void SPI_ReceiveData(SPI_RegDef_t* pSPIx, uint8_t* pRxBuffer, uint32_t len)
 {
 
+    while (len > 0)
+    {
+        while (SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG) == FLAG_RESET);
+
+        if (pSPIx->CR1 & (1 << 11))
+        {
+            *pRxBuffer = *((uint16_t *)pSPIx->DR);
+            len -= 2;
+            (uint16_t *)pRxBuffer++;
+        } else
+        {
+            *pRxBuffer = *((uint8_t *)pSPIx->DR);
+            len--;
+            pRxBuffer++;
+        }
+        
+    }
 }
 
 void SPI_IRQITControl(uint8_t IRQNumber, uint8_t EnorDi)
