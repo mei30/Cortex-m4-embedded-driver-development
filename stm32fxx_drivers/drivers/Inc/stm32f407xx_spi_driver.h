@@ -52,15 +52,28 @@ typedef struct
 #define SPI_SSM_DI    0
 
 #define SPI_TXE_FLAG        (1 << 1)
-#define SPI_RXNE_FLAG        (1 << 0)
 #define SPI_RXNE_FLAG       (1 << 0)
 #define SPI_BUSY_FLAG       (1 << 7)
+
+#define SPI_READY            0
+#define SPI_BUSY_IN_RX       1
+#define SPI_BUSY_IN_TX       2
 
 typedef struct
 {
     SPI_RegDef_t* pSPIx;
     SPI_ConfigDef_t SPIConfig;
+    uint8_t* pTxBuffer;
+    uint8_t* pRxBuffer;
+    uint32_t TxLen;
+    uint32_t RxLen;
+    uint8_t TxState;
+    uint8_t RxState;
 } SPI_Handle_t;
+
+#define SPI_EVENT_TX_CMPLT      1
+#define SPI_EVENT_RX_CMPLT      2
+#define SPI_EVENT_OVR_ERR       3
 
 void SPI_PreClockControl(SPI_RegDef_t* pSPIx, uint8_t EnorDi);
 
@@ -71,12 +84,22 @@ void SPI_SendData(SPI_RegDef_t* pSPIx, uint8_t* pTxBuffer, uint32_t len);
 
 void SPI_ReceiveData(SPI_RegDef_t* pSPIx, uint8_t* pRxBuffer, uint32_t len);
 
+uint8_t SPI_SendDataIT(SPI_Handle_t* pSPIHandle, uint8_t* pTxBuffer, uint32_t len);
+
+uint8_t SPI_ReceiveDataIT(SPI_Handle_t* pSPIHandle, uint8_t* pRxBuffer, uint32_t len);
+
 void SPI_IRQITControl(uint8_t IRQNumber, uint8_t EnorDi);
 void SPI_IRQPRIControl(uint8_t IRQNumber, uint8_t IRQPriority);
 void SPI_IRQHandling(SPI_Handle_t* pSPIHandle);
 
 void SPI_PeripheralControl(SPI_RegDef_t* pSPIx, uint8_t EnorDi);
 void SPI_SSIConfig(SPI_RegDef_t* pSPIx, uint8_t EnorDi);
+
+void SPI_ClearOVRFlag(SPI_RegDef_t* pSPIx);
+void SPI_CloseTransmision(SPI_Handle_t* pSPIHandle);
+void SPI_CloseReception(SPI_Handle_t* pSPIHandle);
+
+void SPI_ApplicationEventCallback(SPI_Handle_t* pSPIHandle, uint8_t AppEv);
 
 // TODO: In order to master mode work properly in Hardware mode add SSE API
 

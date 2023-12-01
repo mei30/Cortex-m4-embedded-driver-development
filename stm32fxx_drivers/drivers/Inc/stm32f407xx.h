@@ -36,6 +36,11 @@
 #define IRQ_NO_EXTI5_9		23
 #define IRQ_NO_EXTI10_15	40
 
+#define IRQ_NO_SPI1			42
+#define IRQ_NO_SPI2			43
+#define IRQ_NO_SPI3			58
+
+
 #define IRQ_NO_PRI0			0
 #define IRQ_NO_PRI1			1
 #define IRQ_NO_PRI2			2
