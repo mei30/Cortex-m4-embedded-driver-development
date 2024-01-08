@@ -204,9 +204,28 @@ typedef struct
 	volatile uint32_t I2SPR;
 } SPI_RegDef_t;
 
+typedef struct
+{
+	volatile uint32_t CR1;
+	volatile uint32_t CR2;
+	volatile uint32_t OAR1;
+	volatile uint32_t OAR2;
+	volatile uint32_t DR;
+	volatile uint32_t SR1;
+	volatile uint32_t SR2;
+	volatile uint32_t CCR;
+	volatile uint32_t TRISE;
+	volatile uint32_t FLTR;
+} I2C_RegDef_t;
+
+
 #define SPI1		((SPI_RegDef_t *) SPI1_BASEADDR)
 #define SPI2		((SPI_RegDef_t *) SPI2_BASEADDR)
 #define SPI3		((SPI_RegDef_t *) SPI3_BASEADDR)
+
+#define I2C1		((I2C_RegDef_t *)I2C1_BASEADDR)
+#define I2C2		((I2C_RegDef_t *)I2C2_BASEADDR)
+#define I2C3		((I2C_RegDef_t *)I2C3_BASEADDR)
 
 /*
 * Peripheral definitions
@@ -243,6 +262,11 @@ typedef struct
 #define I2C1_PCLOCK_EN()		(RCC->APB1ENR |= (1 << 21))
 #define I2C2_PCLOCK_EN()		(RCC->APB1ENR |= (1 << 22))
 #define I2C3_PCLOCK_EN()		(RCC->APB1ENR |= (1 << 23))
+
+/* Clock disable macros for I2Cx peripherals */
+#define I2C1_PCLOCK_DI()		(RCC->APB1ENR &= ~(1 << 21))
+#define I2C2_PCLOCK_DI()		(RCC->APB1ENR &= ~(1 << 22))
+#define I2C3_PCLOCK_DI()		(RCC->APB1ENR &= ~(1 << 23))
 
 /* Clock enable macros for SPIx peripherals */
 #define SPI1_PCLOCK_EN()		(RCC->APB2ENR |= (1 << 12))
@@ -292,6 +316,10 @@ typedef struct
 #define SPI2_REG_RESET()		do { (RCC->APB1RSTR |= (1 << 14)); (RCC->APB1RSTR &= ~(1 << 14));}while(0)
 #define SPI3_REG_RESET()		do { (RCC->APB1RSTR |= (1 << 15)); (RCC->APB1RSTR &= ~(1 << 15));}while(0)
 
+#define I2C1_REG_RESET()		do { (RCC->APB1RSTR |= (1 << 21)); (RCC->APB1RSTR &= ~(1 << 21));}while(0)
+#define I2C2_REG_RESET()		do { (RCC->APB1RSTR |= (1 << 22)); (RCC->APB1RSTR &= ~(1 << 22));}while(0)
+#define I2C3_REG_RESET()		do { (RCC->APB1RSTR |= (1 << 23)); (RCC->APB1RSTR &= ~(1 << 23));}while(0)
+
 #define GPIO_BASEADDR_TO_CODE(x) ((x == GPIOA) ? 0 :\
 								 (x == GPIOB) ? 1 :\
 								 (x == GPIOC) ? 3 :\
@@ -301,6 +329,25 @@ typedef struct
 								 (x == GPIOG) ? 7 :\
 								 (x == GPIOH) ? 8 :\
 								 (x == GPIOI) ? 9 : 0)
+
+// I2C pheripral bit postions
+
+// CR1
+#define PE		0
+#define SMBUS	1
+#define SMBTYPE	3
+#define ENARP	4
+#define ENPEC	5
+#define ENGC	6
+#define NO_STRETCH	7
+#define START 	8
+#define StOP	9
+#define ACK		10
+#define POS		11
+#define PEC		12
+#define ALERT	13
+#define SWRST	15
+
 
 
 
@@ -316,5 +363,6 @@ typedef struct
 
 #include "stm32f407xx_gpio_driver.h"
 #include "stm32f407xx_spi_driver.h"
+#include "stm32f407xx_i2c_driver.h"
 
 #endif /* INC_STM32F407XX_H_ */

@@ -7,9 +7,12 @@
 
 #include "stm32f407xx_spi_driver.h"
 
+#include <stddef.h>
+
 static void spi_txe_interrupt_handle(SPI_Handle_t* pSPIHandle);
 static void spi_rxne_interrupt_handle(SPI_Handle_t* pSPIHandle);
 static void spi_ovr_interrupt_handle(SPI_Handle_t* pSPIHandle);
+
 
 void SPI_PreClockControl(SPI_RegDef_t* pSPIx, uint8_t EnorDi)
 {
@@ -208,7 +211,7 @@ uint8_t SPI_ReceiveDataIT(SPI_Handle_t* pSPIHandle, uint8_t* pRxBuffer, uint32_t
 
     return pSPIHandle->RxState;
 }
-}
+
 
 void SPI_IRQPRIControl(uint8_t IRQNumber, uint8_t IRQPriority)
 {
@@ -278,18 +281,18 @@ static void spi_txe_interrupt_handle(SPI_Handle_t* pSPIHandle)
     if (pSPIHandle->pSPIx->CR1 & (1 << 11))
     {
         pSPIHandle->pSPIx->DR = *((uint16_t *)pSPIHandle->pTxBuffer);
-        pSPIHandle->len -= 2;
+        pSPIHandle->TxLen -= 2;
         (uint16_t *)pSPIHandle->pTxBuffer++;
     } else
     {
         pSPIHandle->pSPIx->DR = *pSPIHandle->pTxBuffer;
-        pSPIHandle->len--;
+        pSPIHandle->TxLen--;
         pSPIHandle->pTxBuffer++;
     }
 
-    if (pSPIHandle->len == 0)
+    if (pSPIHandle->TxLen == 0)
     {
-        SPI_CloseTransmision();
+        SPI_CloseTransmision(pSPIHandle);
         SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_TX_CMPLT);
     }
 
@@ -300,18 +303,18 @@ static void spi_rxne_interrupt_handle(SPI_Handle_t* pSPIHandle)
         if (pSPIHandle->pSPIx->CR1 & (1 << 11))
         {
             *pSPIHandle->pRxBuffer = ((uint16_t)pSPIHandle->pSPIx->DR);
-            pSPIHandle->len -= 2;
+            pSPIHandle->RxLen -= 2;
             (uint16_t *)pSPIHandle->pRxBuffer++;
         } else
         {
             *pSPIHandle->pRxBuffer = ((uint8_t)pSPIHandle->pSPIx->DR);
-            pSPIHandle->len--;
+            pSPIHandle->RxLen--;
             pSPIHandle->pRxBuffer++;
         }
 
-    if (pSPIHandle->len == 0)
+    if (pSPIHandle->RxLen == 0)
     {
-        SPI_CloseReception();
+        SPI_CloseReception(pSPIHandle);
         SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_RX_CMPLT);
     }
 }
@@ -343,17 +346,17 @@ void SPI_CloseTransmision(SPI_Handle_t* pSPIHandle)
 {
     pSPIHandle->pSPIx->CR2 &= ~(1 << 7);
     pSPIHandle->pTxBuffer = NULL;
-    pSPIHandle->len = 0;
+    pSPIHandle->TxLen = 0;
     pSPIHandle->TxState = SPI_READY; 
 }
 
 void SPI_CloseReception(SPI_Handle_t* pSPIHandle)
 {
     pSPIHandle->pSPIx->CR2 &= ~(1 << 6);
-    pSPIHandle->len = 0;
+    pSPIHandle->RxLen = 0;
     pSPIHandle->RxState = SPI_READY; 
 }
 
-__atribute__((weak)) void SPI_ApplicationEventCallback(SPI_Handle_t* pSPIHandle, uint8_t AppEv)
+__attribute__((weak)) void SPI_ApplicationEventCallback(SPI_Handle_t* pSPIHandle, uint8_t AppEv)
 {
 }
